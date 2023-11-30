@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>privateGPT Whatsapp client</title>
+</head>
+<body>
+<div id='content'>
+    <div id='message'>
+        <h1>Client loading, please wait...</h1>
+    </div>
+    <div>
+        <a href='http://localhost:8001' target='_blank'><p>Private GPT</p></a>
+    </div>
+</div>
+
+<script>
+    const socket = new WebSocket('ws://localhost:${port}'); // Connect to the WebSocket server
+    socket.addEventListener('message', (event) => document.getElementById('message').innerHTML = event.data);
+</script>
+</body>
+</html>
