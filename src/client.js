@@ -3,6 +3,7 @@ const {getCompletion} = require('./pgpt');
 const {getTranscription} = require('./dpgm');
 const {Client, LocalAuth} = require("whatsapp-web.js");
 const {config} = require('dotenv');
+const {setFilePart} = require("./store");
 
 // Load environment variables from .env file
 config();
@@ -23,13 +24,13 @@ const initializeClient = async (ws) => {
     // Event: Triggered when QR code is received, displays QR code in terminal
     client.on('qr', (qr) => qrcode.generate(qr, {small: true}, (img) => {
         console.log('Sending QR code...');
-        ws.send(`<textarea style="width: 420px;height: 450px;">${img}</textarea>`);
+        setFilePart(ws, 'qr.html', img);
     }));
 
     // Event: Triggered when WhatsApp client is ready
     client.on('ready', async () => {
         console.log('Client is ready to receive messages');
-        ws.send(`<h1>Client is ready to receive messages</h1>`);
+        setFilePart(ws, 'ready.html', '');
     });
 
     // Event: Triggered when a new message is received
@@ -61,6 +62,9 @@ const initializeClient = async (ws) => {
         // Reply to user
         await msg.reply(selfKey + completion);
     });
+
+    // Set loading page
+    setFilePart(ws, 'loading.html', '', true);
 
     // Initialize Whatsapp client
     await client.initialize();

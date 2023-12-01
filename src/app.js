@@ -8,8 +8,9 @@ const {initializeClient} = require("./client");
 // Load environment variables from .env file
 config();
 
-// Check if application port is set, throw error if not
+// Check mandatory values are set
 if (!process.env.PORT) throw new Error('Port not provided');
+if (!process.env.PRIVATE_GPT_URL) throw new Error('privateGPT url not provided');
 
 // Initialize Express client
 const app = express();

@@ -1,23 +1,34 @@
 const {join} = require("path");
 const {readFile} = require("fs");
+const {getPagePart} = require("./store");
 
 /**
- * Serves the content of the index.html file.
- * Replaces '${port}' with the environment variable PORT in the HTML content.
- * @param {IncomingMessage} req - The request object.
- * @param {ServerResponse} res - The response object.
+ * Serves the page content by reading an HTML file, replacing placeholders,
+ * and sending the modified content as a response.
+ * @param {import('express').Request} req - The request object.
+ * @param {import('express').Response} res - The response object.
  */
 const servePageContent = (req, res) => {
     const indexPath = join(__dirname, 'public', 'index.html');
+
+    // Read the HTML file
     readFile(indexPath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Error reading HTML file');
         }
-        const modifiedData = data.toString().replace('${port}', process.env.PORT);
+
+        let page = data.toString();
+
+        // Replace placeholders in the HTML content
+        page = page.replace('${url}', process.env.PRIVATE_GPT_URL);
+        page = page.replace('${port}', process.env.PORT);
+        page = page.replace('${part}', getPagePart());
+
+        // Set the response Content-Type and send the modified page
         res.set('Content-Type', 'text/html');
-        res.send(modifiedData);
+        res.send(page);
     });
-}
+};
 
 module.exports = {
     servePageContent

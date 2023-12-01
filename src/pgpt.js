@@ -1,3 +1,8 @@
+const {config} = require('dotenv');
+
+// Load environment variables from .env file
+config();
+
 /**
  * Retrieves completion for a given prompt.
  * @param {string} prompt - The prompt to generate completion.
@@ -5,7 +10,7 @@
  */
 const getCompletion = async (prompt) => {
     try {
-        const response = await fetch('http://localhost:8001/v1/completions', {
+        const response = await fetch(`${process.env.PRIVATE_GPT_URL}/v1/completions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

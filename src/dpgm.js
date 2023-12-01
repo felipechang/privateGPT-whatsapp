@@ -1,27 +1,28 @@
-const {Deepgram} = require('@deepgram/sdk');
 const {config} = require('dotenv');
 
 // Load environment variables from .env file
 config();
 
-// Initialize Deepgram client with API key (if available)
+/**
+ * Represents a Deepgram client.
+ * @typedef {Object} DeepgramClient
+ * @property {Function} transcription - Function to transcribe audio.
+ */
+
+const {Deepgram} = require('@deepgram/sdk');
+
+/**
+ * Initialize Deepgram client with API key (if available).
+ * @type {Deepgram}
+ */
 const dg = new Deepgram(process.env.DEEPGRAM_API_KEY || 'DUMMY');
 
 /**
- * @typedef {Object} Media
- * @property {string} mimetype - The MIME type of the media.
- * @property {string} data - The base64-encoded data of the media.
- */
-
-/**
- * @typedef {Object} TranscriptionResult
- * @property {string} result - The transcription result.
- */
-
-/**
- * Gets the transcription of audio media using Deepgram SDK.
- * @param {Media} media - The audio media object containing mimetype and base64 data.
- * @returns {Promise<string>} - The transcription of the audio media.
+ * Get transcription from media.
+ * @param {Object} media - Media object containing mimetype and data.
+ * @param {string} media.mimetype - Type of media (e.g., audio, video).
+ * @param {string} media.data - Base64 encoded media data.
+ * @returns {Promise<string>} - A Promise that resolves with the transcription or an empty string.
  */
 const getTranscription = async (media) => {
     if (media.mimetype.indexOf('audio') !== -1) {
@@ -32,8 +33,8 @@ const getTranscription = async (media) => {
         return transcription.results.channels[0].alternatives[0].transcript;
     }
     return '';
-}
+};
 
 module.exports = {
-    getTranscription
-}
+    getTranscription,
+};
