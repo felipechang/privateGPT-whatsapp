@@ -28,6 +28,8 @@ Once the application is running, follow these steps:
 ## Configuration
 
 - **PORT:** Set the application port.
+- **PRIVATE_GPT_URL:** URL for the privateGPT client.
+- **PRIVATE_GPT_SYSTEM:** privateGPT system prompt to modify behaviour.
 - **ALLOWED_USERS:** Comma separated list of authorized users' phone numbers (51999999999@c.us).
 - **DEEPGRAM_API_KEY:** Add your Deepgram API key to enable transcription of audio messages.
 
